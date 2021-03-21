@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Tracks } from './Tracks';
+import * as defaults from './defaults';
 
 const generateId = () => Date.now();
 
 export const App = () => {
-  const [duration, setDuration] = useState<number>(5000);
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [duration, setDuration] = useState<number>(defaults.duration);
+  const [tracks, setTracks] = useState<Track[]>(defaults.tracks);
+  const [markup, setMarkup] = useState<string>(defaults.markup);
 
   const addNewTrack = (selectors: string[]) => {
     const newTrack: Track = {
