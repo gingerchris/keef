@@ -1,3 +1,5 @@
+declare module 'prismjs/components/prism-core';
+
 interface TrackKeyframe {
   id: number;
   percentages: number[];

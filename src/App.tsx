@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tracks } from './Tracks';
 import * as defaults from './defaults';
+import { MarkupInput } from './MarkupInput';
 
 const generateId = () => Date.now();
 
@@ -98,6 +99,7 @@ export const App = () => {
 
   return (
     <div>
+      <MarkupInput markup={markup} setMarkup={setMarkup} />
       <pre>{JSON.stringify(tracks, null, 2)}</pre>
       <Tracks addNewTrack={addNewTrack} />
     </div>
