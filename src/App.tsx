@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Tracks } from './Tracks';
 import * as defaults from './defaults';
 import { MarkupInput } from './MarkupInput';
 
 const generateId = () => Date.now();
+
+const AppWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Previews = styled.div`
+  display: flex;
+  height: 40vh;
+`;
 
 export const App = () => {
   const [duration, setDuration] = useState<number>(defaults.duration);
@@ -98,10 +109,12 @@ export const App = () => {
   };
 
   return (
-    <div>
-      <MarkupInput markup={markup} setMarkup={setMarkup} />
+    <AppWrapper>
+      <Previews>
+        <MarkupInput markup={markup} setMarkup={setMarkup} />
+      </Previews>
       <pre>{JSON.stringify(tracks, null, 2)}</pre>
       <Tracks addNewTrack={addNewTrack} />
-    </div>
+    </AppWrapper>
   );
 };
