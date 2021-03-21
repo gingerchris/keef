@@ -24,7 +24,7 @@ export const App = () => {
   };
 
   const addKeyframe = (trackId: number, percentage: number, styles: string) => {
-    const newKeyframe: Keyframe = {
+    const newKeyframe = {
       id: generateId(),
       percentages: [percentage],
       styles,
@@ -64,7 +64,7 @@ export const App = () => {
   const updateKeyframe = (
     trackId: number,
     keyframeId: number,
-    x: number,
+    percentages: number[],
     styles: string
   ) => {
     const track = tracks.find(({ id }) => id === trackId);
@@ -78,7 +78,7 @@ export const App = () => {
     }
 
     const updatedKeyframe = Object.assign({}, keyframe, {
-      x: x || keyframe.x,
+      percentages: percentages || keyframe.percentages,
       styles: styles || keyframe.styles,
     });
 

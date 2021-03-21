@@ -1,11 +1,13 @@
-interface Keyframe {
+interface TrackKeyframe {
   id: number;
   percentages: number[];
-  styles: string;
+  styles: {
+    [property: string]: string;
+  };
 }
 
 interface Track {
   id: number;
   selectors: string[];
-  keyframes: Keyframe[];
+  keyframes: TrackKeyframe[];
 }
