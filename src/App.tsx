@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Tracks } from './Tracks';
 import * as defaults from './defaults';
 import { MarkupInput } from './MarkupInput';
+import { Preview } from './Preview';
 
 const generateId = () => Date.now();
 
@@ -112,6 +113,7 @@ export const App = () => {
     <AppWrapper>
       <Previews>
         <MarkupInput markup={markup} setMarkup={setMarkup} />
+        <Preview markup={markup} animationStyles={''} />
       </Previews>
       <pre>{JSON.stringify(tracks, null, 2)}</pre>
       <Tracks addNewTrack={addNewTrack} />
