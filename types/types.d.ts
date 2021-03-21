@@ -13,3 +13,10 @@ interface Track {
   selectors: string[];
   keyframes: TrackKeyframe[];
 }
+
+interface AnimationProperties {
+  duration: number;
+  easing: string;
+  iterations: number | string;
+  direction: string;
+}

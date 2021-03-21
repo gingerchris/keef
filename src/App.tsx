@@ -4,6 +4,7 @@ import { Tracks } from './Tracks';
 import * as defaults from './defaults';
 import { MarkupInput } from './MarkupInput';
 import { Preview } from './Preview';
+import { tracksToStyles } from './helpers/tracksToStyles';
 
 const generateId = () => Date.now();
 
@@ -18,7 +19,10 @@ const Previews = styled.div`
 `;
 
 export const App = () => {
-  const [duration, setDuration] = useState<number>(defaults.duration);
+  const [
+    animationProperties,
+    setAnimationProperties,
+  ] = useState<AnimationProperties>(defaults.properties);
   const [tracks, setTracks] = useState<Track[]>(defaults.tracks);
   const [markup, setMarkup] = useState<string>(defaults.markup);
 
@@ -113,7 +117,10 @@ export const App = () => {
     <AppWrapper>
       <Previews>
         <MarkupInput markup={markup} setMarkup={setMarkup} />
-        <Preview markup={markup} animationStyles={''} />
+        <Preview
+          markup={markup}
+          animationStyles={tracksToStyles(tracks, animationProperties)}
+        />
       </Previews>
       <pre>{JSON.stringify(tracks, null, 2)}</pre>
       <Tracks addNewTrack={addNewTrack} />
