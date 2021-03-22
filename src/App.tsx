@@ -122,8 +122,7 @@ export const App = () => {
           animationStyles={tracksToStyles(tracks, animationProperties)}
         />
       </Previews>
-      <pre>{JSON.stringify(tracks, null, 2)}</pre>
-      <Tracks addNewTrack={addNewTrack} />
+      <Tracks addNewTrack={addNewTrack} tracks={tracks} />
     </AppWrapper>
   );
 };
