@@ -7,7 +7,7 @@ interface MarkupInputProps {
 
 export const MarkupInput = ({ markup, setMarkup }: MarkupInputProps) => {
   return (
-    <pre>
+    <pre style={{ overflow: 'auto' }}>
       <code>{markup}</code>
     </pre>
   );
