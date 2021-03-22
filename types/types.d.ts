@@ -14,9 +14,19 @@ interface Track {
   keyframes: TrackKeyframe[];
 }
 
+interface TrackWithMarkers extends Track {
+  markers: Marker[];
+}
+
 interface AnimationProperties {
   duration: number;
   easing: string;
   iterations: number | string;
   direction: string;
+}
+
+interface Marker {
+  trackId: number;
+  keyframeId: number;
+  percentage: number;
 }

@@ -1,5 +1,4 @@
 const trackToStyles = (track: Track, animation: AnimationProperties) => {
-  console.log(track, animation);
   return `
     ${track.selectors.join(',')} {
       animation-name: animation-${track.id};

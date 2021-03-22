@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 interface TrackProps {
-  track: Track;
+  track: TrackWithMarkers;
   width: number;
+  setActiveMarker: (marker: Marker) => void;
 }
 
 interface MarkerProps {
@@ -10,26 +12,30 @@ interface MarkerProps {
   id: number;
 }
 
-const Marker = ({ x }: MarkerProps) => {
-  return <path d="M 0 20 L 10 40 L -10 40 Z" transform={`translate(${x} 0)`} />;
-};
+const Marker = styled.path`
+  cursor: pointer;
+`;
 
-export const Track = ({ track, width }: TrackProps) => {
-  const markers = track.keyframes.reduce((markers: MarkerProps[], keyframe) => {
-    keyframe.percentages.forEach((percentage) =>
-      markers.push({ id: keyframe.id, x: (width / 100) * percentage })
-    );
-    return markers;
-  }, []);
-  console.log(markers);
+export const Track = ({ track, width, setActiveMarker }: TrackProps) => {
   return (
     <div>
       <h4>{track.selectors.join(',')}</h4>
       <svg width="100%" height="40">
         <line x1={0} y1="20" x2="100%" y2="20" stroke="black" />
-        {markers.map((marker) => (
-          <Marker {...marker} key={marker.x} />
-        ))}
+        {track.markers.map((marker) => {
+          const x = (width / 100) * marker.percentage;
+          return (
+            <Marker
+              key={`${marker.percentage}:${track.id}`}
+              d="M 0 20 L 10 40 L -10 40 Z"
+              transform={`translate(${x} 0)`}
+              tabIndex={0}
+              onClick={() => {
+                setActiveMarker(marker);
+              }}
+            />
+          );
+        })}
       </svg>
     </div>
   );

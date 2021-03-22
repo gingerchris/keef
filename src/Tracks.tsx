@@ -2,11 +2,16 @@ import React, { useState, createRef, useEffect } from 'react';
 import { Track } from './Track';
 
 interface TracksProps {
+  tracks: TrackWithMarkers[];
   addNewTrack: (selectors: string[]) => void;
-  tracks: Track[];
+  setActiveMarker: (marker: Marker) => void;
 }
 
-export const Tracks = ({ addNewTrack, tracks }: TracksProps) => {
+export const Tracks = ({
+  addNewTrack,
+  tracks,
+  setActiveMarker,
+}: TracksProps) => {
   const [width, setWidth] = useState<number>(0);
   const containerRef = createRef<HTMLDivElement>();
   useEffect(() => {
@@ -36,9 +41,8 @@ export const Tracks = ({ addNewTrack, tracks }: TracksProps) => {
 
   return (
     <div ref={containerRef}>
-      {width}
       {tracks.map((track) => (
-        <Track track={track} width={width} />
+        <Track track={track} width={width} setActiveMarker={setActiveMarker} />
       ))}
       <form>
         <label htmlFor="selectors">Selectors (separated by ,)</label>

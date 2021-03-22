@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Tracks } from './Tracks';
 import * as defaults from './defaults';
 import { MarkupInput } from './MarkupInput';
 import { Preview } from './Preview';
 import { tracksToStyles } from './helpers/tracksToStyles';
+import { keyframesToMarkers } from './helpers/keyframesToMarkers';
+import { ActiveMarker } from './ActiveMarker';
 
 const generateId = () => Date.now();
 
@@ -25,6 +27,18 @@ export const App = () => {
   ] = useState<AnimationProperties>(defaults.properties);
   const [tracks, setTracks] = useState<Track[]>(defaults.tracks);
   const [markup, setMarkup] = useState<string>(defaults.markup);
+  const [tracksWithMarkers, setTracksWithMarkers] = useState<
+    TrackWithMarkers[]
+  >([]);
+
+  useEffect(() => {
+    const newTracksWithMarkers = tracks.map((track) => {
+      return Object.assign({}, track, { markers: keyframesToMarkers(track) });
+    });
+    setTracksWithMarkers(newTracksWithMarkers);
+  }, [tracks]);
+
+  const [activeMarker, setActiveMarker] = useState<Marker>();
 
   const addNewTrack = (selectors: string[]) => {
     const newTrack: Track = {
@@ -113,6 +127,43 @@ export const App = () => {
     setTracks(updatedTracks);
   };
 
+  const getActiveMarker = () => {
+    if (activeMarker) {
+      const activeTrack = tracksWithMarkers.find(
+        (track) => track.id === activeMarker.trackId
+      );
+
+      const activeMarkerIndex = activeTrack!.markers.findIndex(
+        (marker) => marker === activeMarker
+      );
+
+      const prevMarker = activeTrack!.markers[activeMarkerIndex - 1];
+      const nextMarker = activeTrack!.markers[activeMarkerIndex + 1];
+
+      const prevKeyframe =
+        prevMarker &&
+        activeTrack!.keyframes.find((kf) => kf.id === prevMarker.keyframeId);
+      const nextKeyframe =
+        nextMarker &&
+        activeTrack!.keyframes.find((kf) => kf.id === nextMarker.keyframeId);
+      const activeKeyframe = activeTrack!.keyframes.find(
+        (kf) => kf.id === activeMarker.keyframeId
+      );
+
+      return (
+        <ActiveMarker
+          prevKeyframe={prevKeyframe}
+          prevPercentage={prevMarker?.percentage}
+          activeKeyframe={activeKeyframe!}
+          activePercentage={activeMarker?.percentage}
+          nextKeyframe={nextKeyframe}
+          nextPercentage={nextMarker.percentage}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <AppWrapper>
       <Previews>
@@ -122,7 +173,12 @@ export const App = () => {
           animationStyles={tracksToStyles(tracks, animationProperties)}
         />
       </Previews>
-      <Tracks addNewTrack={addNewTrack} tracks={tracks} />
+      {getActiveMarker()}
+      <Tracks
+        addNewTrack={addNewTrack}
+        tracks={tracksWithMarkers}
+        setActiveMarker={setActiveMarker}
+      />
     </AppWrapper>
   );
 };
