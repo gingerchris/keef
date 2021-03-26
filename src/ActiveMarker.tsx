@@ -21,8 +21,12 @@ export const ActiveMarker = ({
     <div>
       {prevKeyframe && (
         <div>
-          <h5>{prevPercentage}</h5>
+          <h5>Previous keframe: {prevPercentage}%</h5>
           <p>{JSON.stringify(prevKeyframe.styles)}</p>
+          <h5>Current keyframe: {activePercentage}%</h5>
+          <p>{JSON.stringify(activeKeyframe.styles)}</p>
+          <h5>Next Keyframe: {nextPercentage}%</h5>
+          <p>{JSON.stringify(nextKeyframe?.styles)}</p>
         </div>
       )}
     </div>
