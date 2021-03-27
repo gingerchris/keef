@@ -42,7 +42,7 @@ export const Tracks = ({
   return (
     <div ref={containerRef}>
       {tracks.map((track) => (
-        <Track track={track} width={width} setActiveMarker={setActiveMarker} />
+        <Track track={track} width={width} setActiveMarker={setActiveMarker} key={track.id} />
       ))}
       <form>
         <label htmlFor="selectors">Selectors (separated by ,)</label>
