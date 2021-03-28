@@ -95,8 +95,8 @@ export const App = () => {
   const updateKeyframe = (
     trackId: number,
     keyframeId: number,
-    percentages: number[],
-    styles: string
+    percentages: number[] | null,
+    styles: string | null
   ) => {
     const track = tracks.find(({ id }) => id === trackId);
     if (!track) {
@@ -178,6 +178,7 @@ export const App = () => {
         addNewTrack={addNewTrack}
         tracks={tracksWithMarkers}
         setActiveMarker={setActiveMarker}
+        updateKeyframe={updateKeyframe}
       />
     </AppWrapper>
   );

@@ -30,3 +30,7 @@ interface Marker {
   keyframeId: number;
   percentage: number;
 }
+
+interface MarkerWithIndex extends Marker {
+  percentageIndex: number;
+}
