@@ -127,43 +127,6 @@ export const App = () => {
     setTracks(updatedTracks);
   };
 
-  const getActiveMarker = () => {
-    if (activeMarker) {
-      const activeTrack = tracksWithMarkers.find(
-        (track) => track.id === activeMarker.trackId
-      );
-
-      const activeMarkerIndex = activeTrack!.markers.findIndex(
-        (marker) => marker === activeMarker
-      );
-
-      const prevMarker = activeTrack!.markers[activeMarkerIndex - 1];
-      const nextMarker = activeTrack!.markers[activeMarkerIndex + 1];
-
-      const prevKeyframe =
-        prevMarker &&
-        activeTrack!.keyframes.find((kf) => kf.id === prevMarker.keyframeId);
-      const nextKeyframe =
-        nextMarker &&
-        activeTrack!.keyframes.find((kf) => kf.id === nextMarker.keyframeId);
-      const activeKeyframe = activeTrack!.keyframes.find(
-        (kf) => kf.id === activeMarker.keyframeId
-      );
-
-      return (
-        <ActiveMarker
-          prevKeyframe={prevKeyframe}
-          prevPercentage={prevMarker?.percentage}
-          activeKeyframe={activeKeyframe!}
-          activePercentage={activeMarker?.percentage}
-          nextKeyframe={nextKeyframe}
-          nextPercentage={nextMarker.percentage}
-        />
-      );
-    }
-    return null;
-  };
-
   return (
     <AppWrapper>
       <Previews>
@@ -173,13 +136,15 @@ export const App = () => {
           animationStyles={tracksToStyles(tracks, animationProperties)}
         />
       </Previews>
-      {getActiveMarker()}
-      <Tracks
-        addNewTrack={addNewTrack}
-        tracks={tracksWithMarkers}
-        setActiveMarker={setActiveMarker}
-        updateKeyframe={updateKeyframe}
-      />
+      <div>
+        <ActiveMarker tracks={tracksWithMarkers} activeMarker={activeMarker} />
+        <Tracks
+          addNewTrack={addNewTrack}
+          tracks={tracksWithMarkers}
+          setActiveMarker={setActiveMarker}
+          updateKeyframe={updateKeyframe}
+        />
+      </div>
     </AppWrapper>
   );
 };
