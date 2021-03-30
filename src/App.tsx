@@ -20,6 +20,10 @@ const Previews = styled.div`
   height: 40vh;
 `;
 
+const TracksContainer = styled.div`
+  display: flex;
+`;
+
 export const App = () => {
   const [
     animationProperties,
@@ -136,15 +140,15 @@ export const App = () => {
           animationStyles={tracksToStyles(tracks, animationProperties)}
         />
       </Previews>
-      <div>
-        <ActiveMarker tracks={tracksWithMarkers} activeMarker={activeMarker} />
+      <TracksContainer>
         <Tracks
           addNewTrack={addNewTrack}
           tracks={tracksWithMarkers}
           setActiveMarker={setActiveMarker}
           updateKeyframe={updateKeyframe}
         />
-      </div>
+        <ActiveMarker tracks={tracksWithMarkers} activeMarker={activeMarker} />
+      </TracksContainer>
     </AppWrapper>
   );
 };

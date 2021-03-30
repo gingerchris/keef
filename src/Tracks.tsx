@@ -1,4 +1,5 @@
 import React, { useState, createRef, useEffect } from 'react';
+import styled from 'styled-components';
 import { Track } from './Track';
 
 interface TracksProps {
@@ -12,6 +13,10 @@ interface TracksProps {
     styles: string | null
   ) => void;
 }
+
+const TracksContainer = styled.div`
+  flex-grow: 1;
+`;
 
 export const Tracks = ({
   addNewTrack,
@@ -64,16 +69,27 @@ export const Tracks = ({
       const percentages = keyframe!.percentages.map((percentage, index) => {
         if (index == percentageIndex) return xPercentage;
         return percentage;
-      })
+      });
 
-      updateKeyframe(draggedMarker.trackId, draggedMarker.keyframeId, percentages, null);
+      updateKeyframe(
+        draggedMarker.trackId,
+        draggedMarker.keyframeId,
+        percentages,
+        null
+      );
     }
-  }
+  };
 
   return (
-    <div ref={containerRef} onMouseMove={onMouseMove}>
+    <TracksContainer ref={containerRef} onMouseMove={onMouseMove}>
       {tracks.map((track) => (
-        <Track track={track} width={width} setDraggedMarker={setDraggedMarker} setActiveMarker={setActiveMarker} key={track.id} />
+        <Track
+          track={track}
+          width={width}
+          setDraggedMarker={setDraggedMarker}
+          setActiveMarker={setActiveMarker}
+          key={track.id}
+        />
       ))}
       <form>
         <label htmlFor="selectors">Selectors (separated by ,)</label>
@@ -85,6 +101,6 @@ export const Tracks = ({
         />
         <button onClick={onAddNewTrack}>Add new track</button>
       </form>
-    </div>
+    </TracksContainer>
   );
 };
