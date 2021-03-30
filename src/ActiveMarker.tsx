@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 interface ActiveMarkerProps {
   activeMarker?: Marker;
@@ -11,6 +12,11 @@ interface KeyframeBlockProps {
   percentage: number;
   active?: boolean;
 }
+
+const ActiveMarkerWrapper = styled.div`
+  flex-basis: 20vw;
+  padding: 20px;
+`;
 
 const KeyframeBlock = ({ title, keyframe, percentage }: KeyframeBlockProps) => {
   return (
@@ -46,7 +52,7 @@ export const ActiveMarker = ({ activeMarker, tracks }: ActiveMarkerProps) => {
       (kf) => kf.id === activeMarker?.keyframeId
     );
     return (
-      <div>
+      <ActiveMarkerWrapper>
         {prevKeyframe && (
           <KeyframeBlock
             title="Previous"
@@ -67,7 +73,7 @@ export const ActiveMarker = ({ activeMarker, tracks }: ActiveMarkerProps) => {
             percentage={nextMarker!.percentage}
           />
         )}
-      </div>
+      </ActiveMarkerWrapper>
     );
   }
   return (
