@@ -1,5 +1,6 @@
 import React, { useState, createRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Playhead } from './Playhead';
 import { Track } from './Track';
 
 interface TracksProps {
@@ -22,11 +23,13 @@ export const Tracks = ({
   addNewTrack,
   tracks,
   setActiveMarker,
-  updateKeyframe
+  updateKeyframe,
 }: TracksProps) => {
   const [width, setWidth] = useState<number>(0);
   const [newSelector, setNewSelector] = useState<string>('');
-  const [draggedMarker, setDraggedMarker] = useState<MarkerWithIndex | null>(null);
+  const [draggedMarker, setDraggedMarker] = useState<MarkerWithIndex | null>(
+    null
+  );
 
   const containerRef = createRef<HTMLDivElement>();
 
@@ -38,8 +41,6 @@ export const Tracks = ({
         setWidth(containerRef.current.getBoundingClientRect().width);
       }
     };
-
-
 
     updateWidth();
     window.addEventListener('resize', updateWidth);
@@ -61,7 +62,7 @@ export const Tracks = ({
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const xPercentage = ((e.clientX / width) * 100);
+    const xPercentage = (e.clientX / width) * 100;
     if (draggedMarker) {
       const { trackId, keyframeId, percentageIndex } = draggedMarker;
       const track = tracks.find(({ id }) => id == trackId);
@@ -82,6 +83,7 @@ export const Tracks = ({
 
   return (
     <TracksContainer ref={containerRef} onMouseMove={onMouseMove}>
+      <Playhead width={width} />
       {tracks.map((track) => (
         <Track
           track={track}
