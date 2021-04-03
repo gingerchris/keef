@@ -1,8 +1,16 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  DOMElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface CurrentTimeProperties {
   currentTime: number;
-  animationProperties: AnimationProperties;
+  setCurrentTime: (time: number) => void;
+  addAnimation: (element: HTMLElement, keyframes: Keyframe[]) => void;
 }
 
 interface CurrentTimeProviderProps {
@@ -19,9 +27,30 @@ export const CurrentTimeProvider = ({
   animationProperties,
 }: CurrentTimeProviderProps) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const animations = useRef<Animation[]>([]);
+
+  const animationTiming = {
+    duration: animationProperties.duration,
+    iterations: Infinity,
+  };
+
+  const addAnimation = (element: Element, keyframes: Keyframe[]) => {
+    const animation = element.animate(keyframes, animationTiming);
+    if (animations.current.length) {
+      //sync animations here
+    }
+
+    animations.current = [...animations.current, animation];
+  };
 
   return (
-    <CurrentTimeContext.Provider value={{ currentTime, animationProperties }}>
+    <CurrentTimeContext.Provider
+      value={{
+        currentTime,
+        setCurrentTime,
+        addAnimation,
+      }}
+    >
       {children}
     </CurrentTimeContext.Provider>
   );
