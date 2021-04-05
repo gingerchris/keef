@@ -137,10 +137,7 @@ export const App = () => {
       <AppWrapper>
         <Previews>
           <MarkupInput markup={markup} setMarkup={setMarkup} />
-          <Preview
-            markup={markup}
-            animationStyles={tracksToStyles(tracks, animationProperties)}
-          />
+          <Preview markup={markup} tracks={tracks} />
         </Previews>
         <TracksContainer>
           <Tracks
