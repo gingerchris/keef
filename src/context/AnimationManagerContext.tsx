@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
 
 interface AnimationManagerValues {
   addAnimation: (element: Element, keyframes: Keyframe[]) => void;
@@ -19,27 +19,35 @@ export const AnimationManagerProvider = ({
   children,
   animationProperties,
 }: AnimationManagerProviderProps) => {
+  const animations = useRef<Animation[]>([]);
+
   const animationTiming = {
     duration: animationProperties.duration,
     iterations: Infinity,
   };
 
   const addAnimation = (element: Element, keyframes: Keyframe[]) => {
-    const existingAnimation = document.getAnimations().find((animation) => {
+    let { current } = animations;
+    const existingAnimation = current.find((animation) => {
       const effect = animation.effect as KeyframeEffect;
       return effect?.target === element;
     });
-    if (existingAnimation) existingAnimation.cancel();
+    if (existingAnimation) {
+      existingAnimation.cancel();
+      current = current.filter((animation) => animation !== existingAnimation);
+    }
 
-    element.animate(keyframes, animationTiming);
+    const animation = element.animate(keyframes, animationTiming);
+    current.push(animation);
+    animations.current = current;
   };
 
   const pause = () => {
-    document.getAnimations().forEach((animation) => animation.pause());
+    animations.current.forEach((animation) => animation.pause());
   };
 
   const resume = () => {
-    document.getAnimations().forEach((animation) => animation.play());
+    animations.current.forEach((animation) => animation.play());
   };
 
   return (
