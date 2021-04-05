@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
+
+export enum PlayStates {
+  playing,
+  paused,
+}
 
 interface AnimationManagerValues {
+  playState: PlayStates;
   addAnimation: (element: Element, keyframes: Keyframe[]) => void;
   pause: () => void;
   resume: () => void;
@@ -22,6 +28,7 @@ export const AnimationManagerProvider = ({
   animationProperties,
 }: AnimationManagerProviderProps) => {
   const animations = useRef<Animation[]>([]);
+  const [playState, setPlayState] = useState<PlayStates>(PlayStates.playing);
 
   const animationTiming = {
     duration: animationProperties.duration,
@@ -40,16 +47,25 @@ export const AnimationManagerProvider = ({
     }
 
     const animation = element.animate(keyframes, animationTiming);
+
+    const currentTime = current[0]?.currentTime || 0;
+    if (playState === PlayStates.paused) {
+      animation.pause();
+    }
+    animation.currentTime = currentTime;
+
     current.push(animation);
     animations.current = current;
   };
 
   const pause = () => {
     animations.current.forEach((animation) => animation.pause());
+    setPlayState(PlayStates.paused);
   };
 
   const resume = () => {
     animations.current.forEach((animation) => animation.play());
+    setPlayState(PlayStates.playing);
   };
 
   const stepForward = () => {
@@ -74,6 +90,7 @@ export const AnimationManagerProvider = ({
         resume,
         stepForward,
         stepBackward,
+        playState,
       }}
     >
       {children}
