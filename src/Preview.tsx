@@ -1,10 +1,17 @@
 import React, { createRef } from 'react';
+import styled from 'styled-components';
 import { useAnimationManager } from './context/AnimationManagerContext';
+import { PlayControls } from './PlayControls';
 
 interface PreviewProps {
   markup: string;
   tracks: Track[];
 }
+
+const PreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const Preview = ({ markup, tracks }: PreviewProps) => {
   const iframeRef = createRef<HTMLIFrameElement>();
@@ -41,11 +48,14 @@ export const Preview = ({ markup, tracks }: PreviewProps) => {
     </html>
   `;
   return (
-    <iframe
-      sandbox="allow-same-origin"
-      srcDoc={srcDoc}
-      ref={iframeRef}
-      onLoad={onIframeLoad}
-    />
+    <PreviewContainer>
+      <iframe
+        sandbox="allow-same-origin"
+        srcDoc={srcDoc}
+        ref={iframeRef}
+        onLoad={onIframeLoad}
+      />
+      <PlayControls />
+    </PreviewContainer>
   );
 };
