@@ -4,6 +4,8 @@ interface AnimationManagerValues {
   addAnimation: (element: Element, keyframes: Keyframe[]) => void;
   pause: () => void;
   resume: () => void;
+  stepForward: () => void;
+  stepBackward: () => void;
 }
 
 interface AnimationManagerProviderProps {
@@ -50,12 +52,28 @@ export const AnimationManagerProvider = ({
     animations.current.forEach((animation) => animation.play());
   };
 
+  const stepForward = () => {
+    const currentTime = animations.current[0].currentTime;
+    animations.current.forEach(
+      (animation) => (animation.currentTime = Math.floor(currentTime || 0) + 10)
+    );
+  };
+
+  const stepBackward = () => {
+    const currentTime = animations.current[0].currentTime;
+    animations.current.forEach(
+      (animation) => (animation.currentTime = Math.floor(currentTime || 0) - 10)
+    );
+  };
+
   return (
     <AnimationManagerContext.Provider
       value={{
         addAnimation,
         pause,
         resume,
+        stepForward,
+        stepBackward,
       }}
     >
       {children}
