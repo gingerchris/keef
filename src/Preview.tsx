@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { createRef, useEffect } from 'react';
 
 interface PreviewProps {
   markup: string;
+  tracks: Track[];
   animationStyles: string;
 }
 
 export const Preview = ({ markup, animationStyles }: PreviewProps) => {
+  const iframeRef = createRef<HTMLIFrameElement>();
+
+  useEffect(() => {
+    if (iframeRef.current) {
+      // iframe initialised
+    }
+  }, [iframeRef]);
   const srcDoc = `
     <!DOCTYPE html>
     <html lang="en" >
@@ -24,5 +32,5 @@ export const Preview = ({ markup, animationStyles }: PreviewProps) => {
     </body>
     </html>
   `;
-  return <iframe sandbox="" srcDoc={srcDoc} />;
+  return <iframe sandbox="" srcDoc={srcDoc} ref={iframeRef} />;
 };
