@@ -139,6 +139,7 @@ export const App = () => {
           <MarkupInput markup={markup} setMarkup={setMarkup} />
           <Preview
             markup={markup}
+            tracks={tracks}
             animationStyles={tracksToStyles(tracks, animationProperties)}
           />
         </Previews>
