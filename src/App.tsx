@@ -7,6 +7,7 @@ import { Preview } from './Preview';
 import { tracksToStyles } from './helpers/tracksToStyles';
 import { keyframesToMarkers } from './helpers/keyframesToMarkers';
 import { ActiveMarker } from './ActiveMarker';
+import { AnimationManagerProvider } from './context/AnimationManagerContext';
 
 const generateId = () => Date.now();
 
@@ -132,23 +133,28 @@ export const App = () => {
   };
 
   return (
-    <AppWrapper>
-      <Previews>
-        <MarkupInput markup={markup} setMarkup={setMarkup} />
-        <Preview
-          markup={markup}
-          animationStyles={tracksToStyles(tracks, animationProperties)}
-        />
-      </Previews>
-      <TracksContainer>
-        <Tracks
-          addNewTrack={addNewTrack}
-          tracks={tracksWithMarkers}
-          setActiveMarker={setActiveMarker}
-          updateKeyframe={updateKeyframe}
-        />
-        <ActiveMarker tracks={tracksWithMarkers} activeMarker={activeMarker} />
-      </TracksContainer>
-    </AppWrapper>
+    <AnimationManagerProvider animationProperties={animationProperties}>
+      <AppWrapper>
+        <Previews>
+          <MarkupInput markup={markup} setMarkup={setMarkup} />
+          <Preview
+            markup={markup}
+            animationStyles={tracksToStyles(tracks, animationProperties)}
+          />
+        </Previews>
+        <TracksContainer>
+          <Tracks
+            addNewTrack={addNewTrack}
+            tracks={tracksWithMarkers}
+            setActiveMarker={setActiveMarker}
+            updateKeyframe={updateKeyframe}
+          />
+          <ActiveMarker
+            tracks={tracksWithMarkers}
+            activeMarker={activeMarker}
+          />
+        </TracksContainer>
+      </AppWrapper>
+    </AnimationManagerProvider>
   );
 };

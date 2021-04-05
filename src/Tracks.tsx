@@ -1,5 +1,6 @@
 import React, { useState, createRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Playhead } from './Playhead';
 import { Track } from './Track';
 
 interface TracksProps {
@@ -82,6 +83,7 @@ export const Tracks = ({
 
   return (
     <TracksContainer ref={containerRef} onMouseMove={onMouseMove}>
+      <Playhead width={width} />
       {tracks.map((track) => (
         <Track
           track={track}
