@@ -24,5 +24,5 @@ export const Preview = ({ markup, animationStyles }: PreviewProps) => {
     </body>
     </html>
   `;
-  return <iframe sandbox="" srcDoc={srcDoc} />;
+  return <iframe sandbox="allow-same-origin" srcDoc={srcDoc} />;
 };
