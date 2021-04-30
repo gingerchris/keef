@@ -1,4 +1,9 @@
 import React from 'react';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
+
+import 'codemirror/mode/xml/xml';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
 
 interface MarkupInputProps {
   markup: string;
@@ -7,8 +12,15 @@ interface MarkupInputProps {
 
 export const MarkupInput = ({ markup, setMarkup }: MarkupInputProps) => {
   return (
-    <pre style={{ overflow: 'auto' }}>
-      <code>{markup}</code>
-    </pre>
+    <CodeMirror
+      value={markup}
+      options={{
+        mode: 'xml',
+        theme: 'material',
+        lineNumbers: true,
+        lineWrapping: true,
+        tabSize: 2
+      }}
+    />
   );
 };
