@@ -21,6 +21,9 @@ export const MarkupInput = ({ markup, setMarkup }: MarkupInputProps) => {
         lineWrapping: true,
         tabSize: 2
       }}
+      onChange={(editor, data, value) => {
+        setMarkup(value);
+      }}
     />
   );
 };
