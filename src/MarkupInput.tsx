@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 
 import 'codemirror/mode/xml/xml';
 import 'codemirror/lib/codemirror.css';
@@ -20,6 +20,9 @@ export const MarkupInput = ({ markup, setMarkup }: MarkupInputProps) => {
         lineNumbers: true,
         lineWrapping: true,
         tabSize: 2
+      }}
+      onBeforeChange={(editor, data, value) => {
+        setMarkup(value);
       }}
       onChange={(editor, data, value) => {
         setMarkup(value);
