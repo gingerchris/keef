@@ -142,6 +142,7 @@ export const App = () => {
         <TracksContainer>
           <Tracks
             addNewTrack={addNewTrack}
+            activeMarker={activeMarker}
             tracks={tracksWithMarkers}
             setActiveMarker={setActiveMarker}
             updateKeyframe={updateKeyframe}
