@@ -6,6 +6,7 @@ import { Track } from './Track';
 interface TracksProps {
   tracks: TrackWithMarkers[];
   addNewTrack: (selectors: string[]) => void;
+  activeMarker?: Marker;
   setActiveMarker: (marker: Marker) => void;
   updateKeyframe: (
     trackId: number,
@@ -23,11 +24,14 @@ export const Tracks = ({
   addNewTrack,
   tracks,
   setActiveMarker,
-  updateKeyframe
+  activeMarker,
+  updateKeyframe,
 }: TracksProps) => {
   const [width, setWidth] = useState<number>(0);
   const [newSelector, setNewSelector] = useState<string>('');
-  const [draggedMarker, setDraggedMarker] = useState<MarkerWithIndex | null>(null);
+  const [draggedMarker, setDraggedMarker] = useState<MarkerWithIndex | null>(
+    null
+  );
 
   const containerRef = createRef<HTMLDivElement>();
 
@@ -39,8 +43,6 @@ export const Tracks = ({
         setWidth(containerRef.current.getBoundingClientRect().width);
       }
     };
-
-
 
     updateWidth();
     window.addEventListener('resize', updateWidth);
@@ -62,7 +64,7 @@ export const Tracks = ({
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const xPercentage = ((e.clientX / width) * 100);
+    const xPercentage = (e.clientX / width) * 100;
     if (draggedMarker) {
       const { trackId, keyframeId, percentageIndex } = draggedMarker;
       const track = tracks.find(({ id }) => id == trackId);
@@ -90,6 +92,7 @@ export const Tracks = ({
           width={width}
           setDraggedMarker={setDraggedMarker}
           setActiveMarker={setActiveMarker}
+          activeMarker={activeMarker}
           key={track.id}
         />
       ))}

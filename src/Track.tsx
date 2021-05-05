@@ -5,23 +5,30 @@ interface TrackProps {
   track: TrackWithMarkers;
   width: number;
   setActiveMarker: (marker: Marker) => void;
+  activeMarker?: Marker;
   setDraggedMarker: (marker: MarkerWithIndex | null) => void;
 }
 
 interface MarkerProps {
-  x: number;
-  id: number;
+  active: boolean;
 }
 
-const Marker = styled.path`
+const Marker = styled.path<MarkerProps>`
   cursor: pointer;
+  ${(props) => props.active && `fill: blue`}
 `;
 
-export const Track = ({ track, width, setDraggedMarker, setActiveMarker }: TrackProps) => {
+export const Track = ({
+  track,
+  width,
+  setDraggedMarker,
+  setActiveMarker,
+  activeMarker,
+}: TrackProps) => {
   const setTransform = (width: number, percentage: number) => {
     const x = (width / 100) * percentage;
     return `translate(${x} 0)`;
-  }
+  };
 
   return (
     <div>
@@ -39,11 +46,14 @@ export const Track = ({ track, width, setDraggedMarker, setActiveMarker }: Track
                 setActiveMarker(marker);
               }}
               onMouseDown={() => {
-                setDraggedMarker(Object.assign({percentageIndex: index}, marker));
+                setDraggedMarker(
+                  Object.assign({ percentageIndex: index }, marker)
+                );
               }}
               onMouseUp={() => {
                 setDraggedMarker(null);
               }}
+              active={marker === activeMarker}
             />
           );
         })}

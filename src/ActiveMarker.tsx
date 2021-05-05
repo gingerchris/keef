@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 interface ActiveMarkerProps {
   activeMarker?: Marker;
   tracks: TrackWithMarkers[];
+  setActiveMarker: (marker: Marker) => void;
 }
 
 interface KeyframeBlockProps {
   title: string;
   keyframe: TrackKeyframe;
   percentage: number;
-  active?: boolean;
+  activate?: () => void;
 }
 
 const ActiveMarkerWrapper = styled.div`
@@ -18,9 +19,17 @@ const ActiveMarkerWrapper = styled.div`
   padding: 20px;
 `;
 
-const KeyframeBlock = ({ title, keyframe, percentage }: KeyframeBlockProps) => {
+const KeyframeBlock = ({
+  title,
+  keyframe,
+  percentage,
+  activate,
+}: KeyframeBlockProps) => {
+  const onClick: MouseEventHandler<HTMLDivElement> = () => {
+    activate && activate();
+  };
   return (
-    <div>
+    <div onClick={onClick}>
       <h5>
         {title}: {percentage}%
       </h5>
@@ -29,7 +38,11 @@ const KeyframeBlock = ({ title, keyframe, percentage }: KeyframeBlockProps) => {
   );
 };
 
-export const ActiveMarker = ({ activeMarker, tracks }: ActiveMarkerProps) => {
+export const ActiveMarker = ({
+  activeMarker,
+  tracks,
+  setActiveMarker,
+}: ActiveMarkerProps) => {
   if (activeMarker) {
     const activeTrack = tracks.find(
       (track) => track.id === activeMarker?.trackId
@@ -53,24 +66,25 @@ export const ActiveMarker = ({ activeMarker, tracks }: ActiveMarkerProps) => {
     );
     return (
       <ActiveMarkerWrapper>
-        {prevKeyframe && (
+        {prevKeyframe && prevMarker && (
           <KeyframeBlock
             title="Previous"
             keyframe={prevKeyframe}
             percentage={prevMarker!.percentage}
+            activate={() => setActiveMarker(prevMarker)}
           />
         )}
         <KeyframeBlock
           title="Selected"
           keyframe={activeKeyframe!}
           percentage={activeMarker!.percentage}
-          active
         />
-        {nextKeyframe && (
+        {nextKeyframe && nextMarker && (
           <KeyframeBlock
             title="Next"
             keyframe={nextKeyframe}
             percentage={nextMarker!.percentage}
+            activate={() => setActiveMarker(nextMarker)}
           />
         )}
       </ActiveMarkerWrapper>

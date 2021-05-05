@@ -142,6 +142,7 @@ export const App = () => {
         <TracksContainer>
           <Tracks
             addNewTrack={addNewTrack}
+            activeMarker={activeMarker}
             tracks={tracksWithMarkers}
             setActiveMarker={setActiveMarker}
             updateKeyframe={updateKeyframe}
@@ -149,6 +150,7 @@ export const App = () => {
           <ActiveMarker
             tracks={tracksWithMarkers}
             activeMarker={activeMarker}
+            setActiveMarker={setActiveMarker}
           />
         </TracksContainer>
       </AppWrapper>
