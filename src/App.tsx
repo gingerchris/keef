@@ -149,6 +149,7 @@ export const App = () => {
           <ActiveMarker
             tracks={tracksWithMarkers}
             activeMarker={activeMarker}
+            setActiveMarker={setActiveMarker}
           />
         </TracksContainer>
       </AppWrapper>
